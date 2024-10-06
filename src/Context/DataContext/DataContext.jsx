@@ -1,6 +1,6 @@
 import { CreateDataContext } from "./CreateDataContext";
 
-function dataContext(props){
+function DataContext(props){
     return(
         <>
             <CreateDataContext.Provider value={{}}>
@@ -10,4 +10,4 @@ function dataContext(props){
     )
 }
 
-export default dataContext;
+export default DataContext;

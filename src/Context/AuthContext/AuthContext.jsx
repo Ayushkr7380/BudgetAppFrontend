@@ -1,6 +1,6 @@
 import { CreateAuthContext } from "./CreateAuthContext";
 
-function AuthContent(props){
+function AuthContext(props){
     return(
         <>
             <CreateAuthContext.Provider value={{}}>
@@ -10,4 +10,4 @@ function AuthContent(props){
     )
 }
 
-export default AuthContent;
+export default AuthContext;

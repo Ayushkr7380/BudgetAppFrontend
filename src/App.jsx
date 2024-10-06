@@ -1,10 +1,11 @@
 import './App.css'
+import BudgetRouters from './CustomRoutes/BudgetRouters'
 
 function App() {
 
   return (
     <>
-      <h1 className='text-white bg-black'>Hello</h1>
+      <BudgetRouters/>
     </>
   )
 }
