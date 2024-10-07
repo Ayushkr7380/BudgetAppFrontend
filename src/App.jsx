@@ -6,8 +6,10 @@ function App() {
 
   return (
     <>
-      <Navbar/>
-      <BudgetRouters/>
+      <div className="bg-black text-white min-h-screen">
+        <Navbar/>
+        <BudgetRouters/>
+      </div>
     </>
   )
 }

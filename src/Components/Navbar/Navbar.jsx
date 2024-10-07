@@ -1,7 +1,7 @@
 const Navbar = () => {
   return (
-    <div>
-        <ul className="menu menu-horizontal bg-base-200 rounded-box mt-6">
+    <div className="flex justify-center">
+        <ul className="bg-black menu menu-horizontal rounded-box mt-6">
             <li>
                 <a className="tooltip" data-tip="Home">
                 <svg
@@ -19,6 +19,22 @@ const Navbar = () => {
                 </a>
             </li>
             <li>
+                <a className="tooltip" data-tip="Profile">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-3.31 0-6 2.69-6 6v2h12v-2c0-3.31-2.69-6-6-6z" />
+                    </svg>
+                </a>
+            </li>
+            <li>
                 <a className="tooltip" data-tip="Details">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -31,22 +47,6 @@ const Navbar = () => {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                </a>
-            </li>
-            <li>
-                <a className="tooltip" data-tip="Stats">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 </a>
             </li>
