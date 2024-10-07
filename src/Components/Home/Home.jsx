@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom"
+// import { Link } from "react-router-dom"
 const Home = () => {
   return (
-    <div>
-        <h1>Home Page</h1>
-        <Link to="/profile">Profile Page</Link>
+    <div className="flex justify-center">
+        <h1>This is Home Page</h1>
     </div>
   )
 }
