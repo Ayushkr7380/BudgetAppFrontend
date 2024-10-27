@@ -5,8 +5,8 @@ const Signup = () => {
 
   const  context = useContext(CreateDataContext);
 
-  const { signUpSubmit } = context;
-  const [ signUpData , setSignUpData] = useState({name : '',email:'',password : ''});
+  const { signUpSubmit , signUpData , setSignUpData} = context;
+ 
   const handleChange = (e)=>{
         const { name , value } = e.target;
         setSignUpData({
@@ -19,7 +19,6 @@ const Signup = () => {
 
   const handleSubmit = async(e) =>{
     e.preventDefault();
-
     await signUpSubmit(signUpData);
   }
 
@@ -33,6 +32,7 @@ const Signup = () => {
          name="name"
          placeholder="Name"
          onChange={handleChange}
+         value={signUpData.name}
          />
          <input
          type="text"
@@ -40,6 +40,7 @@ const Signup = () => {
          name="email"
          placeholder="Email"
          onChange={handleChange}
+         value={signUpData.email}
          />
          <input
          type="password"
@@ -47,6 +48,7 @@ const Signup = () => {
          name="password"
          placeholder="Password"
          onChange={handleChange}
+         value={signUpData.password}
          />
 
          <div className="grid grid-cols-2 items-center text-center mt-3 px-2">
