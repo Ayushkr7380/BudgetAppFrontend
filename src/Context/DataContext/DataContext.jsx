@@ -11,6 +11,7 @@ function DataContext(props){
     const [ loginData , setLoginData ] = useState({email : '',password : ''});
     const [ expenditureDetails , setExpenditureDetails] = useState({ExpenditureName:'',ExpenditureAmount:'',ExpenditureDate:''});
 
+    const [ expenditureData , setExpenditureData] = useState([]);
 
     //SignUp
     const signUpSubmit = async(signUpdata) =>{
@@ -46,17 +47,29 @@ function DataContext(props){
   // console.log(expenditureDetails);
   const submitExpenditureDetails = async() =>{
     console.log(expenditureDetails); 
-    setExpenditureDetails({ExpenditureName:'',ExpenditureAmount:'',ExpenditureDate:''});
+    
     try {
-        const response = await axios.post(`${URL}/`);
-        console.log(response.data)
+        const response = await axios.post(`${URL}/api/additem`,expenditureDetails,{withCredentials:true});
+        console.log(response.data);
+        setExpenditureDetails({ExpenditureName:'',ExpenditureAmount:'',ExpenditureDate:''});
+        fetchExpenditureData();
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data.message);
+    }
+  }
+
+  const fetchExpenditureData = async() =>{
+    try {
+        const response = await axios.get(`${URL}/api/getitem`,{withCredentials:true});
+        console.log(response.data);
+        setExpenditureData(response.data.expenditureData);
+    } catch (error) {
+        console.log(error.response.data.message);
     }
   }
     return(
         <>
-            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails}}>
+            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails ,setExpenditureData , expenditureData ,fetchExpenditureData}}>
                 {props.children}
             </CreateDataContext.Provider>
         </>

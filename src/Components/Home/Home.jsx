@@ -5,80 +5,55 @@ const Home = () => {
   
   const context = useContext(CreateDataContext);
   const authContext = useContext(CreateAuthContext);
-  const { handleChange , submitExpenditureDetails , expenditureDetails} = context;
+  const { handleChange , submitExpenditureDetails , expenditureDetails , expenditureData ,fetchExpenditureData} = context;
   
   const { userDetailsData ,userData} = authContext;
   
-  const dummydata = [
-    {
-        date:"2024-10-01",
-        item:"Biryani",
-        price:"700"
-    },
-    {
-      date:"2024-10-01",
-      item:"Ayush",
-      price:"20"
-    },
-    {
-      date:"2024-10-01",
-      item:"Hello",
-      price:"200"
-    },
-    {
-        date:"2024-10-01",
-        item:"Coke",
-        price:"4000"
-    },
-    {
-        date:"2024-10-02",
-        item:"Cake",
-        price:"2000"
-    },
-    {
-      date:"2024-10-02",
-      item:"Cake",
-      price:"2000"
-  },
-  {
-    date:"2024-10-02",
-    item:"Cake",
-    price:"2000"
-},
-]
+  // console.log("data : ",expenditureData);
 
 
 const [groupedByDate, setGroupedByDate] = useState({});
 
 function userFetch(){
-  console.log("Function working.");
+  // console.log("Function working.");
   userDetailsData();
 }
 useEffect(()=>{
   userFetch(); 
+  fetchExpenditureData();
 },[]);
 
-console.log(userData);
+// console.log(userData);
 useEffect(() => {
   // Grouping the dummydata by date and calculating total price
-  const groupDataByDate = dummydata.reduce((acc, ele) => {
-    const { date, item, price } = ele;
-    if (acc[date]) {
-      acc[date].items.push({ item, price });
-      acc[date].total += parseFloat(price);
+  const groupDataByDate = expenditureData.reduce((acc, ele) => {
+    const { ExpenditureDate
+      , ExpenditureName, 
+      ExpenditureAmount } = ele;
+    if (acc[ExpenditureDate
+    ]) {
+      acc[ExpenditureDate
+      ].items.push({ ExpenditureName, 
+        ExpenditureAmount });
+      acc[ExpenditureDate
+      ].total += parseFloat(
+        ExpenditureAmount);
     } else {
-      acc[date] = {
-        items: [{ item, price }],
-        total: parseFloat(price),
+      acc[ExpenditureDate
+      ] = {
+        items: [{ ExpenditureName, 
+          ExpenditureAmount }],
+        total: parseFloat(
+          ExpenditureAmount),
       };
     }
     return acc;
   }, {});
 
   setGroupedByDate(groupDataByDate);
-}, []);
+}, [expenditureData]);
 
-console.log(groupedByDate);
+// console.log(groupedByDate);
 
   return (
     <div className="flex items-center flex-col  ">
@@ -109,20 +84,20 @@ console.log(groupedByDate);
           <button className="border-white border-2 p-2 rounded-md" onClick={submitExpenditureDetails}>Add</button>
         </div>
         
-        <div className="grid grid-cols-4">
+        <div className="grid grid-cols-4 mt-4">
           {Object.keys(groupedByDate).map((date) => (
-            <div key={date} className="mb-4 border p-3 text-black m-2 bg-slate-300">
-              <h3 className="font-bold mb-2 text-orange-600">{date}</h3>
+            <div key={date} className="mb-4 border p-3 text-black m-2 bg-slate-300 rounded-md">
+              <h3 className="font-bold mb-2 text-black">{date}</h3>
               <ul>
                 {groupedByDate[date].items.map((ele, index) => (
                   <li key={index} className="mb-1">
-                    {ele.item} - ₹{ele.price}
+                    {ele.ExpenditureName} - ₹{ele.ExpenditureAmount}
                     
                   </li>
                   
                 ))}
               </ul>
-              <p className="text-green-600 font-semibold">Total = {groupedByDate[date].total}</p>
+              <p className="text-black font-bold text-md">Total = {groupedByDate[date].total}</p>
             </div>
           ))}
         </div>
