@@ -3,7 +3,7 @@ import { CreateDataContext } from "./CreateDataContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 function DataContext(props){
-    const URL = 'http://127.0.0.1:3000';
+    const URL = 'http://localhost:3000';
 
     const navigate = useNavigate();
 
@@ -29,6 +29,7 @@ function DataContext(props){
         try {
             const response = await axios.post(`${URL}/auth/login`,loginData,{withCredentials:true});
             console.log(response.data);
+            navigate('/');
         } catch (error) {
             console.log(error.response.data.message);
         }

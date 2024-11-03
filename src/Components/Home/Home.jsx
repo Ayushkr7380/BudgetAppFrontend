@@ -1,10 +1,13 @@
 import { useContext, useEffect, useState } from "react"
 import { CreateDataContext } from "../../Context/DataContext/CreateDataContext";
+import { CreateAuthContext } from "../../Context/AuthContext/CreateAuthContext";
 const Home = () => {
   
   const context = useContext(CreateDataContext);
-  const { handleChange , submitExpenditureDetails , expenditureDetails } = context;
+  const authContext = useContext(CreateAuthContext);
+  const { handleChange , submitExpenditureDetails , expenditureDetails} = context;
   
+  const { userDetailsData ,userData} = authContext;
   
   const dummydata = [
     {
@@ -44,8 +47,18 @@ const Home = () => {
 },
 ]
 
+
 const [groupedByDate, setGroupedByDate] = useState({});
 
+function userFetch(){
+  console.log("Function working.");
+  userDetailsData();
+}
+useEffect(()=>{
+  userFetch(); 
+},[]);
+
+console.log(userData);
 useEffect(() => {
   // Grouping the dummydata by date and calculating total price
   const groupDataByDate = dummydata.reduce((acc, ele) => {
