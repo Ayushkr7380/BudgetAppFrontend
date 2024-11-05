@@ -12,7 +12,7 @@ function DataContext(props){
     const [ expenditureDetails , setExpenditureDetails] = useState({ExpenditureName:'',ExpenditureAmount:'',ExpenditureDate:''});
 
     const [ expenditureData , setExpenditureData] = useState([]);
-
+    const [showEditItemOption, setShowEditItemOption] = useState({});
     //SignUp
     const signUpSubmit = async(signUpdata) =>{
         try {
@@ -77,9 +77,36 @@ function DataContext(props){
         console.log(error.response.data.message);
     }
   }
+
+
+  const handleHideEditItem = (itemId) => {
+    setShowEditItemOption((prev) => ({
+      ...prev,
+      [itemId]: false, // Hide edit option for the specific item
+    }));
+  };
+
+  const editItem = async(itemId , itemname , itemprice ) =>{
+        try {
+            const response = await axios.post(`${URL}/api/updateitem`,{
+                id:itemId,
+                name : itemname,
+                price : itemprice
+            },{
+                withCredentials:true
+            });
+            console.log(response.data);
+            handleHideEditItem(itemId);
+            fetchExpenditureData();
+        } catch (error) {
+            console.log(error.response.data.message);
+            handleHideEditItem(itemId);
+        }
+        
+  }
     return(
         <>
-            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails ,setExpenditureData , expenditureData ,fetchExpenditureData , deleteItem}}>
+            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails ,setExpenditureData , expenditureData ,fetchExpenditureData , deleteItem ,showEditItemOption, setShowEditItemOption,handleHideEditItem ,editItem}}>
                 {props.children}
             </CreateDataContext.Provider>
         </>
