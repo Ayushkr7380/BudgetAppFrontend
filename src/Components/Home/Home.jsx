@@ -3,6 +3,7 @@ import { CreateDataContext } from "../../Context/DataContext/CreateDataContext";
 import { CreateAuthContext } from "../../Context/AuthContext/CreateAuthContext";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { IoAddCircleOutline } from "react-icons/io5";
 
 const Home = () => {
   const context = useContext(CreateDataContext);
@@ -13,12 +14,13 @@ const Home = () => {
     submitExpenditureDetails,
     expenditureDetails,
     expenditureData,
-    fetchExpenditureData
+    fetchExpenditureData ,
+    deleteItem
   } = context;
 
   const { userDetailsData } = authContext;
 
-  const [groupedByDate, setGroupedByDate] = useState({});
+  const [groupedByMonth, setGroupedByMonth] = useState({});
 
   // Fetch user and expenditure data on component mount
   useEffect(() => {
@@ -26,31 +28,48 @@ const Home = () => {
     fetchExpenditureData();
   }, []);
 
-  // Group expenditures by date and calculate total for each date
+  // Group expenditures by month and calculate daily and monthly totals
   useEffect(() => {
-    const groupDataByDate = expenditureData.reduce((acc, { ExpenditureDate, ExpenditureName, ExpenditureAmount }) => {
-      if (acc[ExpenditureDate]) {
-        acc[ExpenditureDate].items.push({ ExpenditureName, ExpenditureAmount });
-        acc[ExpenditureDate].total += parseFloat(ExpenditureAmount);
-      } else {
-        acc[ExpenditureDate] = {
-          items: [{ ExpenditureName, ExpenditureAmount }],
-          total: parseFloat(ExpenditureAmount),
-        };
+    const groupDataByMonth = expenditureData.reduce((acc, { ExpenditureDate, ExpenditureName, ExpenditureAmount ,_id}) => {
+      const [day, month, year] = ExpenditureDate.split("-");
+      const monthYear = `${new Date(year, month - 1).toLocaleString("en-US", { month: "long" })} ${year}`;
+      
+      if (!acc[monthYear]) {
+        acc[monthYear] = { days: {}, monthlyTotal: 0 };
       }
+
+      // Add daily entries
+      if (!acc[monthYear].days[ExpenditureDate]) {
+        acc[monthYear].days[ExpenditureDate] = { items: [], dailyTotal: 0 };
+      }
+
+      acc[monthYear].days[ExpenditureDate].items.push({ ExpenditureName, ExpenditureAmount ,_id});
+      acc[monthYear].days[ExpenditureDate].dailyTotal += parseFloat(ExpenditureAmount);
+      acc[monthYear].monthlyTotal += parseFloat(ExpenditureAmount);
+
       return acc;
     }, {});
 
-    // Sort the grouped data by date in ascending order
-    const sortedGroupedData = Object.keys(groupDataByDate)
-      .sort((a, b) => new Date(a.split('-').reverse().join('-')) - new Date(b.split('-').reverse().join('-')))
+    // Sort by month and day
+    const sortedGroupedData = Object.keys(groupDataByMonth)
+      .sort((a, b) => new Date(a) - new Date(b))
       .reduce((acc, key) => {
-        acc[key] = groupDataByDate[key];
+        acc[key] = groupDataByMonth[key];
         return acc;
       }, {});
 
-    setGroupedByDate(sortedGroupedData);
+    setGroupedByMonth(sortedGroupedData);
   }, [expenditureData]);
+// console.log('dataaaa',groupedByMonth);
+
+const handleDeleteItem = (itemId) =>{
+  console.log("delete item id : ",itemId);
+  deleteItem(itemId);
+}
+
+const handleEditItem = (itemId) =>{
+  console.log("edit item id : ",itemId);
+}
 
   return (
     <div className="flex items-center flex-col">
@@ -89,24 +108,41 @@ const Home = () => {
         Add
       </button>
       
-      <div className="grid md:grid-cols-4 mt-4 grid-cols-2">
-        {Object.keys(groupedByDate).map((date) => (
-          <div key={date} className="mb-4 border p-3 text-black m-2 bg-slate-300 rounded-md">
-            <div className="flex justify-end md:text-xl mb-3">
-              <p className="text-green-600 mx-1 px-1"><FaEdit /></p>
-              <p className="text-red-600  mx-1 px-1"><MdDelete /></p>
-            </div>
-            <h3 className="font-bold mb-2 text-black">{date}</h3>
-            <ul>
-              {groupedByDate[date].items.map((item, index) => (
-                <li key={index} className="mb-1">
-                  {item.ExpenditureName} - ₹{item.ExpenditureAmount}
-                </li>
+      <div className="mt-4">
+        {Object.keys(groupedByMonth).map((monthYear) => (
+          <div key={monthYear} className="mb-6 mx-4">
+            <h3 className="font-bold text-lg text-center text-black mb-2 bg-gray-200 p-2 rounded-md">
+              {monthYear} - Total: ₹{groupedByMonth[monthYear].monthlyTotal.toFixed(2)}
+            </h3>
+            <div className="bg-white shadow rounded-md p-4 text-black">
+              {Object.keys(groupedByMonth[monthYear].days).map((date) => (
+                <div key={date} className="flex flex-col items-center justify-center border-b py-2">
+                  
+                  <div className=" flex items-center text-black font-bold mb-2">
+                  <span>
+                    {date}
+                  </span>
+                  <span className="text-green-600 text-3xl cursor-pointer ml-6"><IoAddCircleOutline />
+                  </span>
+                  </div>
+                  <div className="flex flex-col">
+                    {groupedByMonth[monthYear].days[date].items.map((item, index) => (
+                      <div key={index} className="flex justify-between mb-1 mx-1">
+                        <span>{item.ExpenditureName} - ₹{item.ExpenditureAmount}</span>
+                        {/* <span>{item._id}</span> */}
+                        <div className="flex items-center justify-end">
+                          <p className="text-green-600 mx-1 px-1 text-xl cursor-pointer" onClick={()=>handleEditItem(item._id)}><FaEdit /></p>
+                          <p className="text-red-600 mx-1 px-1 text-xl cursor-pointer" onClick={()=>handleDeleteItem(item._id)}><MdDelete /></p>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="text-right font-bold mt-2">
+                      Day Total: ₹{groupedByMonth[monthYear].days[date].dailyTotal.toFixed(2)}
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ul>
-            <p className="text-black font-bold text-md">
-              Total = ₹{groupedByDate[date].total.toFixed(2)}
-            </p>
+            </div>
           </div>
         ))}
       </div>

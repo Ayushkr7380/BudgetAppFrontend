@@ -67,9 +67,19 @@ function DataContext(props){
         console.log(error.response.data.message);
     }
   }
+
+  const deleteItem = async(id)=>{
+    try {
+        const response = await axios.post(`${URL}/api/deleteitem`,{id:id},{withCredentials:true});
+        console.log(response.data);
+        fetchExpenditureData();
+    } catch (error) {
+        console.log(error.response.data.message);
+    }
+  }
     return(
         <>
-            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails ,setExpenditureData , expenditureData ,fetchExpenditureData}}>
+            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails ,setExpenditureData , expenditureData ,fetchExpenditureData , deleteItem}}>
                 {props.children}
             </CreateDataContext.Provider>
         </>
