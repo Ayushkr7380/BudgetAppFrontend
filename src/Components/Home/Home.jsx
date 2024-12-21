@@ -35,8 +35,13 @@ const Home = () => {
 
   // Group expenditures by month and calculate daily and monthly totals
   useEffect(() => {
+    // let currentYear = new Date().getFullYear();
+    // console.log(currentYear);
+    
+    // console.log("Current Year Details",FetchCurrentYearData);
     const groupDataByMonth = expenditureData.reduce((acc, { ExpenditureDate, ExpenditureName, ExpenditureAmount, _id }) => {
       const [day, month, year] = ExpenditureDate.split("-");
+      // console.log(day,month,year);
       const monthYear = `${new Date(year, month - 1).toLocaleString("en-US", { month: "long" })} ${year}`;
 
       if (!acc[monthYear]) {
@@ -55,13 +60,14 @@ const Home = () => {
     }, {});
 
     const sortedGroupedData = Object.keys(groupDataByMonth)
-      .sort((a, b) => new Date(a) - new Date(b))
-      .reduce((acc, key) => {
-        acc[key] = groupDataByMonth[key];
-        return acc;
-      }, {});
+    .sort((a, b) => new Date(b) - new Date(a)) // Sort in descending order
+    .reduce((acc, key) => {
+      acc[key] = groupDataByMonth[key];
+      return acc;
+    }, {});
 
     setGroupedByMonth(sortedGroupedData);
+
   }, [expenditureData]);
 
   const handleDeleteItem = (itemId) => {
@@ -92,6 +98,8 @@ const Home = () => {
     setShowEditItemOption((prev) => ({ ...prev, [itemId]: false }));
   };
 
+  // console.log("Data-->",expenditureData);
+  
   return (
     <div className="flex items-center flex-col">
       <h2 className="text-2xl font-semibold underline">Write your daily expenditure here</h2>
@@ -138,9 +146,9 @@ const Home = () => {
             <h3 className="font-bold text-lg text-center text-black mb-2 bg-gray-200 p-1 rounded-md">
               {monthYear} - Total: ₹{groupedByMonth[monthYear].monthlyTotal.toFixed(2)}
             </h3>
-            <div className="bg-white shadow rounded-md p-2 text-black grid md:grid-cols-3 grid-cols-2">
+            <div className="bg-white shadow rounded-md p-2 text-black grid md:grid-cols-3 grid-cols-1">
               {Object.keys(groupedByMonth[monthYear].days).map((date) => (
-                <div key={date} className="flex flex-col items-center justify-center border-b py-2">
+                <div key={date} className="flex flex-col items-center justify-center border-b p-2">
                   <div className="flex items-center text-black font-bold mb-2">
                     <span>{date}</span>
                   </div>

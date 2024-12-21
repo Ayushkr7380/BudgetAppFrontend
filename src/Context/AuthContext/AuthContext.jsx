@@ -18,7 +18,7 @@ function AuthContext(props){
             setUserData(response.data.user);
         } catch (error) {
           // console.log("error part");
-            console.log(error.response.data.message);
+            // console.log(error.response.data.message);
             navigate('/auth/login');
         }
     }
@@ -26,7 +26,7 @@ function AuthContext(props){
     async function userLogout(){
         try {
             const response = await axios.post(`${URL}/auth/logout`,{},{withCredentials:true});
-            console.log(response.data);
+            // console.log(response.data);
             setUserData({});
             // setExpenditureData([]);
             navigate('/auth/login');
