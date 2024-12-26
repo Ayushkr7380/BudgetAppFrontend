@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CreateDataContext } from "./CreateDataContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { toast } from 'react-toastify';
 function DataContext(props){
     const URL = 'http://localhost:3000';
 
@@ -13,6 +14,7 @@ function DataContext(props){
 
     const [ expenditureData , setExpenditureData] = useState([]);
     const [showEditItemOption, setShowEditItemOption] = useState({});
+    const [loginLoadingBar,setLoginLoadingBar] = useState(false);
     //SignUp
     const signUpSubmit = async(signUpdata) =>{
         try {
@@ -28,11 +30,23 @@ function DataContext(props){
     //Login
     const loginSubmit = async(loginData) =>{
         try {
+            setLoginLoadingBar(true);
             const response = await axios.post(`${URL}/auth/login`,loginData,{withCredentials:true});
             console.log(response.data);
+            setLoginLoadingBar(false);
             navigate('/');
+            toast.success(response.data.message,{
+                autoClose:2500
+            });
         } catch (error) {
+            setLoginLoadingBar(false);
             console.log(error.response.data.message);
+            toast.error(error.response.data.message,{
+                autoClose:2500
+            });
+        }
+        finally{
+            setLoginLoadingBar(false);
         }
     }
 
@@ -106,7 +120,7 @@ function DataContext(props){
   }
     return(
         <>
-            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails ,setExpenditureData , expenditureData ,fetchExpenditureData , deleteItem ,showEditItemOption, setShowEditItemOption,handleHideEditItem ,editItem}}>
+            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails ,setExpenditureData , expenditureData ,fetchExpenditureData , deleteItem ,showEditItemOption, setShowEditItemOption,handleHideEditItem ,editItem,setLoginLoadingBar,loginLoadingBar}}>
                 {props.children}
             </CreateDataContext.Provider>
         </>

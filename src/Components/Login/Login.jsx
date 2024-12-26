@@ -1,11 +1,13 @@
 import { useContext} from "react";
 import { Link } from "react-router-dom" 
 import { CreateDataContext } from "../../Context/DataContext/CreateDataContext";
+// import LoadingBar from "react-top-loading-bar";
+import ClipLoader from "react-spinners/ClipLoader";
 const Login = () => {
 
   const context = useContext(CreateDataContext);
 
-  const {loginSubmit ,loginData , setLoginData} = context;
+  const {loginSubmit ,loginData , setLoginData , loginLoadingBar , setLoginLoadingBar} = context;
   
   const handleChange = (e) =>{
       const { name , value } = e.target;
@@ -42,11 +44,17 @@ const Login = () => {
          onChange={handleChange}
          value={loginData.password}
          />
-
+          <div  className="text-center h-5">
+          {
+          loginLoadingBar && <span><ClipLoader color="white" size={15}
+ /></span>
+         }
+          </div>
          <div className="grid grid-cols-2 items-center text-center mt-3 px-2">
           <button className="border-white border-2  rounded-md font-semibold" onClick={handleSubmit}>Login</button>
           <Link to='/auth/signup' className="underline" >Signup</Link>
          </div>
+         
       </div>
     </div>
   )
