@@ -1,13 +1,12 @@
 import { useContext} from "react";
 import { Link } from "react-router-dom" 
 import { CreateDataContext } from "../../Context/DataContext/CreateDataContext";
-// import LoadingBar from "react-top-loading-bar";
 import ClipLoader from "react-spinners/ClipLoader";
 const Login = () => {
 
   const context = useContext(CreateDataContext);
 
-  const {loginSubmit ,loginData , setLoginData , loginLoadingBar , setLoginLoadingBar} = context;
+  const {loginSubmit ,loginData , setLoginData , loginLoadingBar} = context;
   
   const handleChange = (e) =>{
       const { name , value } = e.target;

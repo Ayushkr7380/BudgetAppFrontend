@@ -15,15 +15,28 @@ function DataContext(props){
     const [ expenditureData , setExpenditureData] = useState([]);
     const [showEditItemOption, setShowEditItemOption] = useState({});
     const [loginLoadingBar,setLoginLoadingBar] = useState(false);
+    const [signupLoadingBar,setSignupLoadingBar] = useState(false);
     //SignUp
     const signUpSubmit = async(signUpdata) =>{
         try {
+            setSignupLoadingBar(true);
             const response = await axios.post(`${URL}/auth/signup`,signUpdata,{withCredentials: true});
             console.log(response.data);
+            setSignupLoadingBar(false);
             setSignUpData({name : '',email:'',password : ''});
             navigate('/auth/login');
+            toast.success(response.data.message,{
+                autoClose:2500
+            });
         } catch (error) {
+            setSignupLoadingBar(false);
             console.log(error.response.data.message);
+            toast.error(error.response.data.message,{
+                autoClose:2500
+            });
+        }
+        finally{
+            setSignupLoadingBar(false);
         }
     }
 
@@ -120,7 +133,7 @@ function DataContext(props){
   }
     return(
         <>
-            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails ,setExpenditureData , expenditureData ,fetchExpenditureData , deleteItem ,showEditItemOption, setShowEditItemOption,handleHideEditItem ,editItem,setLoginLoadingBar,loginLoadingBar}}>
+            <CreateDataContext.Provider value={{signUpData , setSignUpData,signUpSubmit,loginData , setLoginData,loginSubmit,handleChange,submitExpenditureDetails,expenditureDetails ,setExpenditureData , expenditureData ,fetchExpenditureData , deleteItem ,showEditItemOption, setShowEditItemOption,handleHideEditItem ,editItem,loginLoadingBar,signupLoadingBar}}>
                 {props.children}
             </CreateDataContext.Provider>
         </>

@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import{ Link } from "react-router-dom";
 import { CreateDataContext } from "../../Context/DataContext/CreateDataContext";
+import ClipLoader from "react-spinners/ClipLoader";
 const Signup = () => {
 
   const  context = useContext(CreateDataContext);
 
-  const { signUpSubmit , signUpData , setSignUpData} = context;
+  const { signUpSubmit , signUpData , setSignUpData  , signupLoadingBar} = context;
  
   const handleChange = (e)=>{
         const { name , value } = e.target;
@@ -50,7 +51,12 @@ const Signup = () => {
          onChange={handleChange}
          value={signUpData.password}
          />
-
+          <div  className="text-center h-5">
+          {
+          signupLoadingBar && <span><ClipLoader color="white" size={15}
+ /></span>
+         }
+          </div>
          <div className="grid grid-cols-2 items-center text-center mt-3 px-2">
           <button className="border-white border-2  rounded-md font-semibold" onClick={handleSubmit}>Signup</button>
           <Link to='/auth/login' className="underline">Login</Link>
