@@ -4,7 +4,8 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CreateDataContext } from "../DataContext/CreateDataContext";
 function AuthContext(props){
-    const URL = 'http://localhost:3000';
+    // const URL = 'http://budgetapp-env.eba-a8nvuqti.ap-south-1.elasticbeanstalk.com';
+    const URL = 'https://yourbudget.site';
     const navigate = useNavigate();
     // const dataContext = useContext(CreateDataContext);
     // const { setExpenditureData } = dataContext; 

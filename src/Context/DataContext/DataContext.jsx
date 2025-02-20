@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 function DataContext(props){
-    const URL = 'http://localhost:3000';
-
+    // const URL = 'http://budgetapp-env.eba-a8nvuqti.ap-south-1.elasticbeanstalk.com';
+    const URL = 'https://yourbudget.site';
     const navigate = useNavigate();
 
     const [ signUpData , setSignUpData] = useState({name : '',email:'',password : ''});
