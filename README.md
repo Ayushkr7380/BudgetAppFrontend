@@ -9,7 +9,7 @@ This is the frontend for a personal budgeting application built with React, Reac
     Routing: React Router DOM
     Styling: Tailwind CSS, DaisyUI
     HTTP Requests: Axios
-    Icons & UI Enhancements: React Icons, React Toastify, React Spinners
+    Icons & UI Enhancements: React Icons,    React Toastify, React Spinners
 
 ---
 
@@ -81,3 +81,5 @@ This is the frontend for a personal budgeting application built with React, Reac
  ## License
 
  This project is developed for educational/demo purposes and is not licensed for public/commercial use.
+
+---
